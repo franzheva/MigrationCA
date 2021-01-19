@@ -1,0 +1,15 @@
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.exe
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.deps.json
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.runtimeconfig.json
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.runtimeconfig.dev.json
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.dll
+D:\GIT\MigrationCA\MigrationCA\bin\Debug\netcoreapp3.1\MigrationCA.pdb
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.csprojAssemblyReference.cache
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.Form1.resources
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.csproj.GenerateResource.cache
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.AssemblyInfoInputs.cache
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.AssemblyInfo.cs
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.csproj.CoreCompileInputs.cache
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.dll
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.pdb
+D:\GIT\MigrationCA\MigrationCA\obj\Debug\netcoreapp3.1\MigrationCA.genruntimeconfig.cache
