@@ -14,6 +14,8 @@ namespace MigrationCA
     {
         public bool isFirstLaunch = true;
         public bool AllowRunMigration = true;
+        public int IterationCounter = 0;
+        PictureBox migrationPictureBox = new PictureBox();
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +42,8 @@ namespace MigrationCA
         private void timer1_Tick(object sender, EventArgs e)
         {
             //call migration recalculation
+            IterationCounter += 1;
+            IterationLbl.Text = IterationCounter.ToString();
         }
 
         private void StartStopBtn_Click(object sender, EventArgs e)
@@ -58,6 +62,28 @@ namespace MigrationCA
                 timer1.Enabled = false;
                 AllowRunMigration = true;
             }
+        }
+        public void CreateBitmapAtRuntime(decimal[,] A)
+        {
+           var  HeightField = f.HeightImg;
+            WidthField = f.WidthImg;
+            var scale = f.scale;
+            migrationPictureBox.Size = new Size(WidthField * scale + 10, HeightField * scale + 10);
+            
+            DrawingPanel.Controls.Add(migrationPictureBox);
+            Bitmap myAutomataField = new Bitmap(WidthField * scale, HeightField * scale);
+            Graphics flagGraphics = Graphics.FromImage(myAutomataField);
+            for (int j = 0; j < WidthField; j++)
+            {
+                for (int i = 0; i < HeightField; i++)
+                {
+                    int col = Convert.ToInt32((1 - A[i, j]) * 255); //Math.Abs(1 - A[j, i]) old version
+                    flagGraphics.FillRectangle(new SolidBrush(Color.FromArgb(col, col, col)), j * scale, i * scale, scale, scale); //(col, col, col) try to (col, 0, 0)
+                }
+            }
+
+            migrationPictureBox.Image = myAutomataField;
+            
         }
     }
 }
