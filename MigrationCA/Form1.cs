@@ -49,9 +49,10 @@ namespace MigrationCA
         private void timer1_Tick(object sender, EventArgs e)
         {
             //call migration recalculation
+            CA.Add(MigrateAutomata(CA[IterationCounter]));
             IterationCounter += 1;
             IterationLbl.Text = IterationCounter.ToString();
-
+            CreateBitmapAtRuntime(CA[IterationCounter]);
         }
 
         private void StartStopBtn_Click(object sender, EventArgs e)
@@ -162,13 +163,39 @@ namespace MigrationCA
         }
         public void SetInitial()
         {
+            IterationCounter = 0;
+            CA = new List<decimal[,]>();
             InitCA = new decimal[CaHeight, CaWidth];
-            Random rand = new Random();
 
             for (int i = 0; i < CaHeight; i++)
                 for (int j = 0; j < CaWidth; j++)
-                    InitCA[i, j] = (Convert.ToDecimal(rand.Next(100))) / 100;
-        }                        
+                    InitCA[i, j] = (Convert.ToDecimal((new Random()).Next(100))) / 100;
+        }
+        public decimal[,] MigrateAutomata(decimal[,] automata)
+        {
+            var arrayRecalculated = new decimal[CaHeight,CaWidth];
+            var migrationRate = new decimal[9];
            
+            for (int i = 0; i < CaHeight; i++)
+                for (int j = 0; j < CaWidth; j++)
+                {
+                    var sum = 0.0m;
+                    for (int m = 0; m < 9; m++)
+                    {
+                        migrationRate[m] = (Convert.ToDecimal(new Random().Next(100))) / 100;
+                        sum += migrationRate[m];
+                    }
+                    arrayRecalculated[i,j]= (migrationRate[0] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[1] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), j] +
+                        migrationRate[2] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[7] * automata[i, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[3] * automata[i, (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[6] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[5] * automata[(i + 1) != CaHeight ? (i + 1) : 0, j] +
+                        migrationRate[4] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[8] * automata[i,j])/sum;
+                }
+            return arrayRecalculated;
+        }
     }
 }
