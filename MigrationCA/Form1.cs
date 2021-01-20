@@ -21,6 +21,8 @@ namespace MigrationCA
         public int CaHeight = 0; 
         public int CaScale=0;
         PictureBox migrationPictureBox = new PictureBox();
+        public decimal[,] InitCA;
+        public List<decimal[,]> CA = new List<decimal[,]>();
         public MigrationMainForm()
         {
             InitializeComponent();
@@ -49,6 +51,7 @@ namespace MigrationCA
             //call migration recalculation
             IterationCounter += 1;
             IterationLbl.Text = IterationCounter.ToString();
+
         }
 
         private void StartStopBtn_Click(object sender, EventArgs e)
@@ -63,6 +66,9 @@ namespace MigrationCA
                         int.TryParse(HeightTbx.Text, out CaHeight);
                         int.TryParse(WidthTbx.Text, out CaWidth);
                         int.TryParse(ScaleTbx.Text, out CaScale);
+                        SetInitial();
+                        CreateBitmapAtRuntime(InitCA);
+                        CA.Add(InitCA);
                         timer1.Enabled = true;
                         isFirstLaunch = false;
                     }
@@ -93,25 +99,24 @@ namespace MigrationCA
             {
                 for (int i = 0; i < CaHeight; i++)
                 {
-                    int col = Convert.ToInt32((1 - A[i, j]) * 255); //Math.Abs(1 - A[j, i]) old version
-                    flagGraphics.FillRectangle(new SolidBrush(Color.FromArgb(col, col, col)), j * CaScale, i * CaScale, CaScale, CaScale); //(col, col, col) try to (col, 0, 0)
+                    int col = Convert.ToInt32((1 - A[i, j]) * 255);
+                    flagGraphics.FillRectangle(new SolidBrush(Color.FromArgb(col, col, col)), j * CaScale, i * CaScale, CaScale, CaScale); 
                 }
             }
 
             migrationPictureBox.Image = myAutomataField;
 
         }
-
         public void SettingsValidation()
         {
             ValidationLbl.Text = (HeightTbx.Text == string.Empty || HeightTbx.Text == "Height")
                 || (WidthTbx.Text == string.Empty || WidthTbx.Text == "Width")
                 || (ScaleTbx.Text == string.Empty || ScaleTbx.Text == "Scale")
                 ? "Empty fields are not allowed"
-                    : (!Regex.IsMatch(HeightTbx.Text, @"^[0-9]*?(\,)?[0-9]*$")
-                    || !Regex.IsMatch(WidthTbx.Text, @"^[0-9]*?(\,)?[0-9]*$")
-                    || !Regex.IsMatch(ScaleTbx.Text, @"^[0-9]*?(\,)?[0-9]*$"))  
-                        ? "Only digitals are allowed"
+                    : (!Regex.IsMatch(HeightTbx.Text, @"^[0-9]*$")
+                    || !Regex.IsMatch(WidthTbx.Text, @"^[0-9]*$")
+                    || !Regex.IsMatch(ScaleTbx.Text, @"^[0-9]*$"))  
+                        ? "Only integers are allowed"
                         :string.Empty;
            
             isValid = ValidationLbl.Text == string.Empty;
@@ -155,5 +160,15 @@ namespace MigrationCA
             ScaleTbx.Text = ScaleTbx.Text == string.Empty ? "Scale" : ScaleTbx.Text;
             isFirstLaunch = ScaleTbx.Text != CaScale.ToString();
         }
+        public void SetInitial()
+        {
+            InitCA = new decimal[CaHeight, CaWidth];
+            Random rand = new Random();
+
+            for (int i = 0; i < CaHeight; i++)
+                for (int j = 0; j < CaWidth; j++)
+                    InitCA[i, j] = (Convert.ToDecimal(rand.Next(100))) / 100;
+        }                        
+           
     }
 }

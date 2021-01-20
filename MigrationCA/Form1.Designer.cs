@@ -159,9 +159,9 @@
             this.label2.ForeColor = System.Drawing.Color.Navy;
             this.label2.Location = new System.Drawing.Point(132, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 19);
+            this.label2.Size = new System.Drawing.Size(113, 19);
             this.label2.TabIndex = 6;
-            this.label2.Text = "CA field setup";
+            this.label2.Text = "CA lattice setup";
             // 
             // IterationLbl
             // 
@@ -187,7 +187,7 @@
             // 
             this.StartStopBtn.Location = new System.Drawing.Point(367, 2);
             this.StartStopBtn.Name = "StartStopBtn";
-            this.StartStopBtn.Size = new System.Drawing.Size(116, 50);
+            this.StartStopBtn.Size = new System.Drawing.Size(100, 70);
             this.StartStopBtn.TabIndex = 2;
             this.StartStopBtn.Text = "Start/Stop Migration";
             this.StartStopBtn.UseVisualStyleBackColor = true;
