@@ -174,26 +174,40 @@ namespace MigrationCA
         public decimal[,] MigrateAutomata(decimal[,] automata)
         {
             var arrayRecalculated = new decimal[CaHeight,CaWidth];
-            var migrationRate = new decimal[9];
-           
+            
+            var migrationRate = new List<decimal[]>[CaHeight, CaWidth];
             for (int i = 0; i < CaHeight; i++)
                 for (int j = 0; j < CaWidth; j++)
                 {
+                    migrationRate[i, j] = new List<decimal[]>();
+                    var tettas = new decimal[9];
                     var sum = 0.0m;
-                    for (int m = 0; m < 9; m++)
+                    for (int m = 0; m < 8; m++)
                     {
-                        migrationRate[m] = (Convert.ToDecimal(new Random().Next(100))) / 100;
-                        sum += migrationRate[m];
+                        var div = 16.0m;
+                        tettas[m] = 1/div;                        
+                        sum += tettas[m];
                     }
-                    arrayRecalculated[i,j]= (migrationRate[0] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
-                        migrationRate[1] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), j] +
-                        migrationRate[2] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j + 1) != CaWidth ? (j + 1) : 0] +
-                        migrationRate[7] * automata[i, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
-                        migrationRate[3] * automata[i, (j + 1) != CaWidth ? (j + 1) : 0] +
-                        migrationRate[6] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
-                        migrationRate[5] * automata[(i + 1) != CaHeight ? (i + 1) : 0, j] +
-                        migrationRate[4] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j + 1) != CaWidth ? (j + 1) : 0] +
-                        migrationRate[8] * automata[i,j])/sum;
+                    tettas[8] = 0.5m;
+                    sum += tettas[8];
+                    for (int m = 0; m < 9; m++)
+                        tettas[m] = tettas[m] / sum;
+                    migrationRate[i, j].Add(tettas);                                       
+                }
+            for (int i = 0; i < CaHeight; i++)
+                for (int j = 0; j < CaWidth; j++)
+                {
+                    var a = migrationRate[i, j].First()[0];
+                    var b = migrationRate[i, j].First()[8];
+                    arrayRecalculated[i,j]= (migrationRate[i, j].First()[0] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[i, j].First()[1] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), j] +
+                        migrationRate[i, j].First()[2] * automata[(i - 1) != -1 ? (i - 1) : (CaHeight - 1), (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[i, j].First()[7] * automata[i, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[i, j].First()[3] * automata[i, (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[i, j].First()[6] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j - 1) != -1 ? (j - 1) : (CaWidth - 1)] +
+                        migrationRate[i, j].First()[5] * automata[(i + 1) != CaHeight ? (i + 1) : 0, j] +
+                        migrationRate[i, j].First()[4] * automata[(i + 1) != CaHeight ? (i + 1) : 0, (j + 1) != CaWidth ? (j + 1) : 0] +
+                        migrationRate[i, j].First()[8] * automata[i,j]);
                 }
             return arrayRecalculated;
         }
